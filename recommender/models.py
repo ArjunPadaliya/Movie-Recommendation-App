@@ -16,17 +16,17 @@ class Movie(models.Model):
 
 
 class Similarity(models.Model):
-    first_movie = models.ForeignKey(Movie, related_name='first_movie', on_delete = 'SET_NULL')
-    second_movie = models.ForeignKey(Movie, related_name='second_movie', on_delete = 'SET_NULL')
+    first_movie = models.ForeignKey(Movie, related_name='first_movie', on_delete = 'CASCADE')
+    second_movie = models.ForeignKey(Movie, related_name='second_movie', on_delete = 'CASCADE')
     similarity_score = models.FloatField()
 
 
 class Tag(models.Model):
-    movie = models.ForeignKey(Movie, on_delete = 'SET_NULL')
+    movie = models.ForeignKey(Movie, on_delete = 'CASCADE')
     tag = models.CharField(max_length=50)
     relevance = models.FloatField()
 
 class OnlineLink(models.Model):
-    movie = models.ForeignKey(Movie, on_delete = 'SET_NULL')
+    movie = models.ForeignKey(Movie, on_delete = 'CASCADE')
     imdb_id = models.CharField(max_length=50)
     youtube_id = models.CharField(max_length=50, null=True)
