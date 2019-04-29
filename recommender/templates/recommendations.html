@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+  {% block content %}
+    <div class="w3-row">
+      <div class="w3-half">
+        <h2>Movies you might like</h2>
+          {% if liked|length == 0 %}
+            <p>Like more movies to see recommendations here</p>
+          {% else %}
+            {% for movie in liked %}
+              <p><a href="/{{ movie.movie_id }}/"> {{ movie.title }}</a></p>
+            {% endfor %}
+          {% endif %}
+      </div>
+
+      <div class="w3-half">
+        <h2>Movies you might not like</h2>
+          {% if not_liked|length == 0 %}
+            <p>Dislike movies to see well received similar movies here</p>
+          {% else %}
+            {% for movie in not_liked %}
+              <p><a href="/{{ movie.movie_id }}/"> {{ movie.title }}</a></p>
+            {% endfor %}
+          {% endif %}
+      </div>
+    </div>
+  {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+  {% block content %}
+    {% if uncomparable %}
+    <p>Welcome to the Movie Recommendation App! This web application can recommend you movies that you might like or dislike. In order to see the recommendations, all you need to do is like and dislike some movies as this will help the app to get to know your preferences. Please select a movie from the list below or search a movie by its name in order to like or dislike the movie.</p><br>
+    <h1>Randomly picked movies for you</h1>
+    <br>
+      <div class="w3-row">
+        {% for movie in uncomparable %}
+        <div class="w3-half">
+          <p><a href="/{{ movie.movie_id }}/">{{ movie.title }}</a></p>
+        </div>
+        {% endfor %}
+      </div>
+
+    {% elif search_results %}
+    <h2>Search Results...</h2>
+      {% for movie in search_results %}
+        <div class="w3-row w3-margin">
+        <div class="w3-twothird w3-container">
+          <h4><a href="/{{ movie.movie_id }}/">{{ movie.title }}</a></h4>
+        </div>
+        </div>
+      {% endfor %}
+
+    {% else %}
+      <h1>Nothing</h1>
+    {% endif %}
+    {% endblock %}

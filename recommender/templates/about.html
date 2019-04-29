@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load static %}
+  {% block content %}
+  <div class="w3-row w3-margin">
+      <div class="w3-third" style="width:20%">
+        <img src="{% static 'Profile.JPG' %}" height="250px" width="225px" />
+      </div>
+      <div class="w3-twothird w3-container" style= "padding-left: 25px">
+      	<h2>Arjun Padaliya</h2>
+      	<p>Masters of Science in Information Technology</p>
+      	<p>University of New Hampshire</p>
+      	<p>ap1170@wildcats.unh.edu</p>
+      </div>
+   </div>
+   <div class="w3-row w3-margin">
+   		<p> This application has been made by Arjun Padaliya as a Master's Project while pursuing my Master's of Science in Information Technology. The main intention behind this project is to learn and improvise the concepts of Machine Learning and Data Science. In addition to that, this project has helped me with increasing my experience and understanding with the Django Framework of Python. I have plans to host this application in any of he cloud platforms like Amazon AWS, DigitalOcean or any other. Finally, I would like to thank Prof. Tim Chadwick, Prof. Mihaela Sabin, Prof. Michael Jonas, Prof. Karen Jin and Prof. Edward Nelson for making me who I am. It has been great experience for last two years learning and improvising my skills with all of you.</p>
+   </div>
+  {% endblock %}

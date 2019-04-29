@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+  <title>Movie Recommendation App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel='stylesheet' href="{% static 'style.css' %}" />
+  <body>
+
+    <div class="container">
+      <center><h1 class="title"><a href="{% url 'recommender:home' %}">Movie Recommendation App</a></h1></center>
+      <ul>
+            <li><a class="{{ home }}" href="{% url 'recommender:home' %}">Home</a></li>
+            <li><a class="{{ detail }}">Movie</a></li>
+            <li><a class="{{ recommendations }}" href="{% url 'recommender:recommendations' %}">Recommendations</a></li>
+            <li><a class="{{ about }}" href="{% url 'recommender:about' %}">About</a></li>
+            <form class="search-container" method="get" accept-charset="utf-8">
+              <li><input type="text" placeholder="Search.." name="search_query"></li>
+              <button type="submit">Submit</button>
+            </form>
+      </ul>
+
+
+    {% block content %}
+    {% endblock %}
+    </div>
+  </body>
+</html>

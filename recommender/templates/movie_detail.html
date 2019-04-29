@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+  {% block content %}
+    <div class="w3-row w3-margin">
+      <div class="w3-third" style="width:20%">
+        <img src="{% static 'movies.png' %}" height="200px" width="200px" />
+      </div>
+      <div class="w3-twothird w3-container" style= "padding-left: 20px">
+        <h3>{{ movie.name }}</h3>
+        <p><b>Genres</b> : {{ movie.genres }}</p>
+        <p><b>Ratings</b> : {{ movie.rating|floatformat:2 }}/5</p>
+        <button><a href="http://www.imdb.com/title/tt{{ links.imdb }}">IMDB Link</a></button>
+        {% if links.youtube %}
+          <button><a href="https://www.youtube.com/watch?v={{links.youtube}}">Youtube Link</a></button>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="w3-row w3-margin">
+      {% if movie.liked == 1 %}
+        <h5>You LIKED this movie</h5>
+      {% elif movie.liked == 0 %}
+        <h5>You DISLIKED this movie</h5>
+      {% else %}
+        <h5>You haven't rated this movie yet</h5>
+      {% endif %}
+      <br>
+      <form id="liked" method="post" accept-charset="utf-8" action="/rate/{{ movie.id }}/">
+          {% csrf_token %}
+          <button type="submit" name="liked">Liked it!</button>
+          <button type="submit" name="disliked">Didn't like it</button>
+          <button type="submit" name="reset">Reset</button>
+      </form>
+    </div>
+
+  {% endblock %}
