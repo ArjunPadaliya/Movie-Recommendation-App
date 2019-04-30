@@ -43,3 +43,4 @@ Open the server in any of the browser, by default it's running on IP 127.0.0.1:8
 
 Homepage of the app displays 20 randomly picked movies for you, this excludes movies you have already rated and everytime list changes on refreshing the page. User can search for the movie using the search bar or user can select one from the homepage, this will bring them to the movie detail page where user can provide their feedback for that movie. Once, the database has enough feeback from the user, Recommendations page can recommend movies for you based on the likes and dislikes of the user.
 
+The "science" behind the system can be found in the investigation notebook [here](https://github.com/ArjunPadaliya/Movie-Recommendation-App/blob/master/Data_Science.ipynb) 
