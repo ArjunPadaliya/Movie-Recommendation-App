@@ -1,0 +1,5 @@
+db.sqlite3
+ml-20m/*
+*ipynb_checkpoints/*
+*/__pycache__/*
+*/*/__pycache__/*

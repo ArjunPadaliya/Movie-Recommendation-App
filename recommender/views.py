@@ -50,7 +50,8 @@ def detail(request, movie_id):
         },
         'links': {
             'imdb': imdb_link,
-            'youtube': links.youtube_id
+            'youtube': links.youtube_id,
+            'tmdb': links.tmdb_id
         },
         'detail': 'active',
     }

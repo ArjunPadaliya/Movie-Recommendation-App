@@ -30,3 +30,4 @@ class OnlineLink(models.Model):
     movie = models.ForeignKey(Movie, on_delete = 'CASCADE')
     imdb_id = models.CharField(max_length=50)
     youtube_id = models.CharField(max_length=50, null=True)
+    tmdb_id = models.CharField(max_length=50, null=True)

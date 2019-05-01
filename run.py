@@ -15,7 +15,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 #Dataset links online
 dataset_link = "http://files.grouplens.org/datasets/movielens/ml-20m.zip"
 youtube_trailors_link = "http://files.grouplens.org/datasets/movielens/ml-20m-youtube.zip"
-DEFAULT_PATH_TO_DB = os.path.join(BASE_DIR, 'db.sqlite3')
+DB_PATH = os.path.join(BASE_DIR, 'db.sqlite3')
 
 
 #Download data from internet and extract data
@@ -54,7 +54,7 @@ def load_dataset(input_dataset_path):
         genome_tags = pd.read_csv(os.path.join(input_dataset_path, 'genome-tags.csv'))
         imdb_links = pd.read_csv(os.path.join(input_dataset_path, 'links.csv'))
         youtube_links = pd.read_csv(os.path.join(input_dataset_path, 'ml-youtube.csv'))
-        links = pd.merge(imdb_links, youtube_links, on='movieId', how='left')[['movieId', 'imdbId', 'youtubeId']]
+        links = pd.merge(imdb_links, youtube_links, on='movieId', how='left')[['movieId', 'imdbId', 'youtubeId', 'tmdbId']]
         movie_tags_as_text = pd.merge(genome_scores, genome_tags, on='tagId')[['movieId', 'tag', 'relevance']]
         return genome_scores, genome_tags, movies, movie_ratings, links, movie_tags_as_text
     else:
@@ -66,7 +66,7 @@ def load_dataset(input_dataset_path):
 #Connecting to database
 def connect_database(database_path):
     if database_path is None:
-        database_path = DEFAULT_PATH_TO_DB
+        database_path = DB_PATH
     db = sqlite3.connect(database_path)
     return db
 
@@ -130,8 +130,8 @@ def write_database(df, table_name, db_connection):
 #Initiate database tables with column names and initiate filling of database tables
 def fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links, movie_tags_as_text):
 
-    links_col_order = ['movie_id', 'imdb_id', 'youtube_id']
-    links.rename(columns={'movieId': 'movie_id', 'imdbId': 'imdb_id', 'youtubeId': 'youtube_id'}, inplace=True)
+    links_col_order = ['movie_id', 'imdb_id', 'youtube_id', 'tmdb_id']
+    links.rename(columns={'movieId': 'movie_id', 'imdbId': 'imdb_id', 'youtubeId': 'youtube_id', 'tmdbId': 'tmdb_id'}, inplace=True)
 
     tags_col_order = ['movie_id', 'tag', 'relevance']
     movie_tags_as_text.rename(columns={'movieId': 'movie_id'}, inplace=True)
@@ -156,9 +156,9 @@ def fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, u
     write_database(movie_to_movie_similarity, 'recommender_similarity', db_connection)
 
 
-def main(dataset_path, database_path):
+def main(dataset_path):
     genome_scores, genome_tags, movies, movie_ratings, links, movie_tags_as_text = load_dataset(dataset_path)
-    db_connection = connect_database(database_path)
+    db_connection = connect_database(DB_PATH)
     movie_to_movie_similarity, dataset_with_tags, uncomparable_movies = calculate_similarity(genome_scores, genome_tags, movies, movie_ratings)
     fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links, movie_tags_as_text)
 
@@ -167,4 +167,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Download MovieLens dataset & fill Django database")
     parser.add_argument('-i', '--input-dataset', type=str, help="Path to dataset folder if already downloaded")
     args = parser.parse_args()
-    main(args.input_dataset, args.database)
+    main(args.input_dataset)
