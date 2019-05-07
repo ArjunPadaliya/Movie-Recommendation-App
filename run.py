@@ -55,8 +55,7 @@ def load_dataset(input_dataset_path):
         imdb_links = pd.read_csv(os.path.join(input_dataset_path, 'links.csv'))
         youtube_links = pd.read_csv(os.path.join(input_dataset_path, 'ml-youtube.csv'))
         links = pd.merge(imdb_links, youtube_links, on='movieId', how='left')[['movieId', 'imdbId', 'youtubeId', 'tmdbId']]
-        movie_tags_as_text = pd.merge(genome_scores, genome_tags, on='tagId')[['movieId', 'tag', 'relevance']]
-        return genome_scores, genome_tags, movies, movie_ratings, links, movie_tags_as_text
+        return genome_scores, genome_tags, movies, movie_ratings, links
     else:
         download_path = str(os.getcwd())
         download_data(download_path)
@@ -128,13 +127,10 @@ def write_database(df, table_name, db_connection):
             pbar.update(step)
 
 #Initiate database tables with column names and initiate filling of database tables
-def fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links, movie_tags_as_text):
+def fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links):
 
     links_col_order = ['movie_id', 'imdb_id', 'youtube_id', 'tmdb_id']
     links.rename(columns={'movieId': 'movie_id', 'imdbId': 'imdb_id', 'youtubeId': 'youtube_id', 'tmdbId': 'tmdb_id'}, inplace=True)
-
-    tags_col_order = ['movie_id', 'tag', 'relevance']
-    movie_tags_as_text.rename(columns={'movieId': 'movie_id'}, inplace=True)
 
     dataset_col_order = ['movie_id', 'title', 'genres', 'num_ratings', 'rating_median', 'rating_mean', 'comparable']
     dataset_with_tags['comparable'] = True
@@ -149,18 +145,15 @@ def fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, u
     print("writing online links to DB...")
     write_database(links[links_col_order], 'recommender_onlinelink', db_connection)
 
-    print("writing movie tags to DB...")
-    write_database(movie_tags_as_text[tags_col_order], 'recommender_tag', db_connection)
-
     print("writing movie similarities to DB...")
     write_database(movie_to_movie_similarity, 'recommender_similarity', db_connection)
 
 
 def main(dataset_path):
-    genome_scores, genome_tags, movies, movie_ratings, links, movie_tags_as_text = load_dataset(dataset_path)
+    genome_scores, genome_tags, movies, movie_ratings, links = load_dataset(dataset_path)
     db_connection = connect_database(DB_PATH)
     movie_to_movie_similarity, dataset_with_tags, uncomparable_movies = calculate_similarity(genome_scores, genome_tags, movies, movie_ratings)
-    fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links, movie_tags_as_text)
+    fill_database(db_connection, movie_to_movie_similarity, dataset_with_tags, uncomparable_movies, links)
 
 
 if __name__ == "__main__":

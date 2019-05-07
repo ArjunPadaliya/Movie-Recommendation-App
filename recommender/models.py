@@ -21,11 +21,6 @@ class Similarity(models.Model):
     similarity_score = models.FloatField()
 
 
-class Tag(models.Model):
-    movie = models.ForeignKey(Movie, on_delete = 'CASCADE')
-    tag = models.CharField(max_length=50)
-    relevance = models.FloatField()
-
 class OnlineLink(models.Model):
     movie = models.ForeignKey(Movie, on_delete = 'CASCADE')
     imdb_id = models.CharField(max_length=50)
