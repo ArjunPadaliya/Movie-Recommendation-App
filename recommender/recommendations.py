@@ -33,13 +33,12 @@ def exclude_liked_movies(similar_unliked_movies, similar_liked_movies):
 
 #Load recommendations based on liked and unliked movies
 def load_recommendations():
-    rated_movies = Movie.objects.filter(liked__isnull=False)
 
-    liked_movies = rated_movies.filter(liked=True, comparable=True)
+    liked_movies = Movie.objects.filter(liked=True, comparable=True)
     similar_liked_movies = get_similar_movies(liked_movies)
     similar_liked_movies.order_by('?')
 
-    unliked_movies = rated_movies.filter(liked=False, comparable=True)
+    unliked_movies = Movie.objects.filter(liked=False, comparable=True)
     similar_unliked_movies = get_similar_movies(unliked_movies)
     similar_unliked_movies.order_by('-rating_mean')
 
